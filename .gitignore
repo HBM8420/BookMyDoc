@@ -22,3 +22,6 @@ yarn-error.log*
 package.json
 package-lock.json
 yarn.lock
+
+frontend/package-lock.json
+backend/package-lock.json
