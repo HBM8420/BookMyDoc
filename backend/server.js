@@ -18,7 +18,8 @@ connectCloudinary();
 // Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontend-seven-tau-41.vercel.app"
+  "https://frontend-seven-tau-41.vercel.app",
+  "https://book-my-doc-seven.vercel.app"
 ];
 
 // ✅ CORS middleware (applied before any routes or body parsing)
