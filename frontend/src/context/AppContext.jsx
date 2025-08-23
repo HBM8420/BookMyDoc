@@ -13,6 +13,7 @@ const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(false);
 
   // Getting Doctors using API
+  
   const getDoctorsData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/doctor/list");

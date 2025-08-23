@@ -5,6 +5,16 @@ import "../index.css";
 import { AppContext } from "../context/AppContext";
 
 const Navbar = () => {
+  const { doctors, doctorsLoading } = useContext(AppContext);
+
+if (doctorsLoading) {
+  return (
+    <div className="flex justify-center items-center h-64">
+      <div className="w-10 h-10 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
+    </div>
+  );
+}
+
   const [activeOption, setActiveOption] = useState(null);
   const navigate = useNavigate();
   const { token, setToken, userData } = useContext(AppContext);
@@ -16,6 +26,7 @@ const Navbar = () => {
   const logout = () => {
     setToken(false);
     localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
@@ -28,7 +39,10 @@ const Navbar = () => {
       />
       <ul className="md:flex items-start gap-5 font-medium hidden">
         <NavLink to="/">
-          <li className="py-1 text-xl " onClick={() => handleClick("home")}>
+          <li
+            className="py-1 text-xl cursor-pointer hover:text-blue-600 transition-colors duration-200 "
+            onClick={() => handleClick("home")}
+          >
             Home
           </li>
           <hr
@@ -39,7 +53,7 @@ const Navbar = () => {
         </NavLink>
         <NavLink to="/alldoctors">
           <li
-            className="py-1 text-xl"
+            className="py-1 text-xl cursor-pointer hover:text-blue-600 transition-colors duration-200"
             onClick={() => handleClick("all-doctors")}
           >
             All Doctors
@@ -51,7 +65,10 @@ const Navbar = () => {
           />
         </NavLink>
         <NavLink to="/contact">
-          <li className="py-1 text-xl" onClick={() => handleClick("contact")}>
+          <li
+            className="py-1 text-xl cursor-pointer hover:text-blue-600 transition-colors duration-200"
+            onClick={() => handleClick("contact")}
+          >
             Contact
           </li>
           <hr
@@ -61,7 +78,10 @@ const Navbar = () => {
           />
         </NavLink>
         <NavLink to="/about">
-          <li className="py-1 text-xl" onClick={() => handleClick("about")}>
+          <li
+            className="py-1 text-xl cursor-pointer hover:text-blue-600 transition-colors duration-200"
+            onClick={() => handleClick("about")}
+          >
             About
           </li>
           <hr
@@ -104,7 +124,10 @@ const Navbar = () => {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="bg-blue-500 text-white px-8 py-3 rounded-full font-light hidden md:block"
+            className="bg-blue-500 text-white px-8 py-3 rounded-full font-light hidden md:block 
+             hover:bg-blue-600 hover:shadow-lg hover:-translate-y-1 
+             active:scale-95 
+             transition-all duration-300 ease-in-out"
           >
             Create Account
           </button>
