@@ -9,7 +9,6 @@ import adminRouter from "./routes/adminRoute.js";
 
 // App config
 const app = express();
-const port = process.env.PORT || 4000;
 
 // Connect to DB and Cloudinary
 connectDB();
@@ -18,10 +17,11 @@ connectCloudinary();
 // Allowed origins
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://frontend-seven-tau-41.vercel.app"
+  "https://frontend-seven-tau-41.vercel.app",
+  "https://book-my-doc-seven.vercel.app"
 ];
 
-// ✅ CORS middleware (applied before any routes or body parsing)
+// ✅ CORS middleware
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -33,7 +33,7 @@ app.use(cors({
   credentials: true,
 }));
 
-// JSON parser middleware
+// JSON parser
 app.use(express.json());
 
 // API routes
@@ -46,7 +46,4 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
-});
+export default app;
