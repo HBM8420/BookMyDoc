@@ -101,6 +101,41 @@ const getProfile = async (req, res) => {
 };
 
  // API to update user profile
+// const updateProfile = async (req, res) => {
+//   try {
+//     const { name, phone, address, dob, gender } = req.body;
+//     const userId = req.userId;
+//     const imageFile = req.file;
+//     console.log(userId, name, phone, address, dob, gender);
+
+//     if (!name || !phone || !dob || !gender) {
+//       return res.json({ success: false, message: "Data Missing" });
+//     }
+
+//     await userModel.findByIdAndUpdate(userId, {
+//       name,
+//       phone,
+//       address: JSON.parse(address),
+//       dob,
+//       gender,
+//     });
+
+//     if (imageFile) {
+//       // upload image to cloudinary
+//       const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+//         resource_type: "image",
+//       });
+//       const imageURL = imageUpload.secure_url;
+
+//       await userModel.findByIdAndUpdate(userId, { image: imageURL });
+//     }
+
+//     res.json({ success: true, message: "Profile Updated" });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ success: false, message: error.message });
+//   }
+// };
 const updateProfile = async (req, res) => {
   try {
     const { name, phone, address, dob, gender } = req.body;
@@ -121,10 +156,21 @@ const updateProfile = async (req, res) => {
     });
 
     if (imageFile) {
-      // upload image to cloudinary
-      const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-        resource_type: "image",
-      });
+      // ✅ Upload image to Cloudinary from buffer
+      const streamUpload = (buffer) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { resource_type: "image" },
+            (error, result) => {
+              if (result) resolve(result);
+              else reject(error);
+            }
+          );
+          stream.end(buffer); // send buffer data to Cloudinary
+        });
+      };
+
+      const imageUpload = await streamUpload(imageFile.buffer);
       const imageURL = imageUpload.secure_url;
 
       await userModel.findByIdAndUpdate(userId, { image: imageURL });
@@ -136,6 +182,7 @@ const updateProfile = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
 
  // API to book appointment
 const bookAppointment = async (req, res) => {
